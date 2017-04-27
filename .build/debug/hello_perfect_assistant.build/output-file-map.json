@@ -1,0 +1,11 @@
+{
+  "": {
+    "swift-dependencies": "/Users/emp215/Desktop/hello-perfect-assistant/.build/debug/hello_perfect_assistant.build/master.swiftdeps"
+  },
+  "/Users/emp215/Desktop/hello-perfect-assistant/Sources/main.swift": {
+    "dependencies": "/Users/emp215/Desktop/hello-perfect-assistant/.build/debug/hello_perfect_assistant.build/main.d",
+    "object": "/Users/emp215/Desktop/hello-perfect-assistant/.build/debug/hello_perfect_assistant.build/main.swift.o",
+    "swiftmodule": "/Users/emp215/Desktop/hello-perfect-assistant/.build/debug/hello_perfect_assistant.build/main~partial.swiftmodule",
+    "swift-dependencies": "/Users/emp215/Desktop/hello-perfect-assistant/.build/debug/hello_perfect_assistant.build/main.swiftdeps"
+  }
+}

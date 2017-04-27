@@ -1,0 +1,31 @@
+client:
+  name: swift-build
+tools: {}
+targets:
+  "test": ["<hello-perfect-assistant.module>","<hello-perfect-assistant.exe>"]
+  "main": ["<hello-perfect-assistant.module>","<hello-perfect-assistant.exe>"]
+default: "main"
+commands: 
+  "<hello-perfect-assistant.module>":
+    tool: swift-compiler
+    executable: "/Users/emp215/Documents/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc"
+    module-name: "hello_perfect_assistant"
+    module-output-path: "/Users/emp215/Desktop/hello-perfect-assistant/.build/debug/hello_perfect_assistant.swiftmodule"
+    inputs: []
+    outputs: ["<hello-perfect-assistant.module>","/Users/emp215/Desktop/hello-perfect-assistant/.build/debug/hello_perfect_assistant.build/main.swift.o"]
+    import-paths: ["/Users/emp215/Desktop/hello-perfect-assistant/.build/debug"]
+    temps-path: "/Users/emp215/Desktop/hello-perfect-assistant/.build/debug/hello_perfect_assistant.build"
+    objects: ["/Users/emp215/Desktop/hello-perfect-assistant/.build/debug/hello_perfect_assistant.build/main.swift.o"]
+    other-args: ["-j8","-D","SWIFT_PACKAGE","-Onone","-g","-enable-testing","-F","/Users/emp215/Documents/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks","-target","x86_64-apple-macosx10.10","-sdk","/Users/emp215/Documents/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.12.sdk","-module-cache-path","/Users/emp215/Desktop/hello-perfect-assistant/.build/debug/ModuleCache"]
+    sources: ["/Users/emp215/Desktop/hello-perfect-assistant/Sources/main.swift"]
+    is-library: false
+    enable-whole-module-optimization: false
+    num-threads: "8"
+
+  "<hello-perfect-assistant.exe>":
+    tool: shell
+    description: "Linking ./.build/debug/hello-perfect-assistant"
+    inputs: ["/Users/emp215/Desktop/hello-perfect-assistant/.build/debug/hello_perfect_assistant.build/main.swift.o"]
+    outputs: ["<hello-perfect-assistant.exe>","/Users/emp215/Desktop/hello-perfect-assistant/.build/debug/hello-perfect-assistant"]
+    args: ["/Users/emp215/Documents/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc","-target","x86_64-apple-macosx10.10","-sdk","/Users/emp215/Documents/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.12.sdk","-g","-L/Users/emp215/Desktop/hello-perfect-assistant/.build/debug","-o","/Users/emp215/Desktop/hello-perfect-assistant/.build/debug/hello-perfect-assistant","-F","/Users/emp215/Documents/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks","-emit-executable","/Users/emp215/Desktop/hello-perfect-assistant/.build/debug/hello_perfect_assistant.build/main.swift.o"]
+
