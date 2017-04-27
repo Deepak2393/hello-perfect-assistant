@@ -1,0 +1,23 @@
+{
+  "": {
+    "swift-dependencies": "/perfectbuild/.build_lin/debug/src.build/master.swiftdeps"
+  },
+  "/perfectbuild/Sources/main.swift": {
+    "dependencies": "/perfectbuild/.build_lin/debug/src.build/main.d",
+    "object": "/perfectbuild/.build_lin/debug/src.build/main.swift.o",
+    "swiftmodule": "/perfectbuild/.build_lin/debug/src.build/main~partial.swiftmodule",
+    "swift-dependencies": "/perfectbuild/.build_lin/debug/src.build/main.swiftdeps"
+  },
+  "/perfectbuild/Sources/people.swift": {
+    "dependencies": "/perfectbuild/.build_lin/debug/src.build/people.d",
+    "object": "/perfectbuild/.build_lin/debug/src.build/people.swift.o",
+    "swiftmodule": "/perfectbuild/.build_lin/debug/src.build/people~partial.swiftmodule",
+    "swift-dependencies": "/perfectbuild/.build_lin/debug/src.build/people.swiftdeps"
+  },
+  "/perfectbuild/Sources/person.swift": {
+    "dependencies": "/perfectbuild/.build_lin/debug/src.build/person.d",
+    "object": "/perfectbuild/.build_lin/debug/src.build/person.swift.o",
+    "swiftmodule": "/perfectbuild/.build_lin/debug/src.build/person~partial.swiftmodule",
+    "swift-dependencies": "/perfectbuild/.build_lin/debug/src.build/person.swiftdeps"
+  }
+}

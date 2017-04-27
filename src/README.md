@@ -1,57 +1,118 @@
-# Tap Tracker
-The simplest example app is called Tap Tracker. The Tap Tracker iOS app presents a button to the user. When tapped, this button will transmit the user's current location to the server. The server will store this location and will return to the iOS app the location of the last user who tapped the button. The app will then show this location on a map view.
+# Perfect JSON API Example [简体中文](README.zh_CN.md)
 
-To execute this example from within Xcode, run the **Tap Tracker Server** target and then the **Tap Tracker** target using an iPhone device simulator of your choice. Ensure that both targets are running simultaniously and that the **Tap Tracker** iOS app is set to simulate your location. 
+<p align="center">
+    <a href="http://perfect.org/get-involved.html" target="_blank">
+        <img src="http://perfect.org/assets/github/perfect_github_2_0_0.jpg" alt="Get Involed with Perfect!" width="854" />
+    </a>
+</p>
 
-![Example Targets](../../SiteAssets/example_targets.png)
+<p align="center">
+    <a href="https://github.com/PerfectlySoft/Perfect" target="_blank">
+        <img src="http://www.perfect.org/github/Perfect_GH_button_1_Star.jpg" alt="Star Perfect On Github" />
+    </a>  
+    <a href="http://stackoverflow.com/questions/tagged/perfect" target="_blank">
+        <img src="http://www.perfect.org/github/perfect_gh_button_2_SO.jpg" alt="Stack Overflow" />
+    </a>  
+    <a href="https://twitter.com/perfectlysoft" target="_blank">
+        <img src="http://www.perfect.org/github/Perfect_GH_button_3_twit.jpg" alt="Follow Perfect on Twitter" />
+    </a>  
+    <a href="http://perfect.ly" target="_blank">
+        <img src="http://www.perfect.org/github/Perfect_GH_button_4_slack.jpg" alt="Join the Perfect Slack" />
+    </a>
+</p>
 
-Additionally, make sure to choose "Allow" when the app requests that you permit it to use your location. If you receive an error stating that location services are not available, ensure that you have selected a location to simulate and restart the iOS Tap Tracker app.
+<p align="center">
+    <a href="https://developer.apple.com/swift/" target="_blank">
+        <img src="https://img.shields.io/badge/Swift-3.0-orange.svg?style=flat" alt="Swift 3.0">
+    </a>
+    <a href="https://developer.apple.com/swift/" target="_blank">
+        <img src="https://img.shields.io/badge/Platforms-OS%20X%20%7C%20Linux%20-lightgray.svg?style=flat" alt="Platforms OS X | Linux">
+    </a>
+    <a href="http://perfect.org/licensing.html" target="_blank">
+        <img src="https://img.shields.io/badge/License-Apache-lightgrey.svg?style=flat" alt="License Apache">
+    </a>
+    <a href="http://twitter.com/PerfectlySoft" target="_blank">
+        <img src="https://img.shields.io/badge/Twitter-@PerfectlySoft-blue.svg?style=flat" alt="PerfectlySoft Twitter">
+    </a>
+    <a href="http://perfect.ly" target="_blank">
+        <img src="http://perfect.ly/badge.svg" alt="Slack Status">
+    </a>
+</p>
 
-![Simulate Location](../../SiteAssets/simulate_location.png)
+An Example JSON API for Perfect
 
-## Client Operations
-1. `ViewController` starts location services and records the user's current location.
-2. `ViewController` presents a single button for the user to tap.
-3. When user taps the button the `ViewController.buttonPressed` function is called.
-4. `ViewController.buttonPressed` formulates an HTTP POST request to the URL *http://localhost:8181/TapTracker* using standard iOS `NSMutableURLRequest` and `NSURLSession` functionality. This post request is very simple and consists merely of the user's latitude and longitude.
-5. `ViewController` receives the JSON structured response data from the server and uses Perfect's `JSONDecode` class to break the data apart and extract the location and time information pertaining to the previous button tap.
-6. The response's `lat`, `long` and `time` components are used to indicate the map coordinates on the subsequent map view.
+This package builds with Swift Package Manager and is part of the [Perfect](https://github.com/PerfectlySoft/Perfect) project.
 
-## Server Operations
-1. The server module consists of two relevent files:
-	* **TTHandlers.swift**, within which is the `PerfectServerModuleInit` function, which all Perfect Server modules must implement, and the `TTHandler` class, which implements the `PageHandler` protocol.
-	* **TapTracker.moustache**, which contains the template for the JSON based response data.
-2. When the **Tap Tracker Server** target is built in Xcode, it places the resulting product in a directory called **PerfectLibraries**. When the Perfect Server is launched, it will look in this directory, based on the current process working directory, and load all the modules it finds calling the `PerfectServerModuleInit` function in each.
-3. `PerfectServerModuleInit` adds a page handler called "TTHandler", associating with it a closure which will be called to create an instance of the handler on-demand when it is needed to fulfill a request. This closure simply returns a new `TTHandler` instance.
-4. In this example, the `PerfectServerModuleInit` function also creates a SQLite database for use in storing the button tap locations and times. It creates a very simple table storing the time, latitude and longitude of the users' button taps.
-5. When a request comes in targetting the **/TapTracker** (or **/TapTracker.moustache**) URL, the server will parse the moustache file and run any moustache pragmas contained therein. This particular moustache template associates itself with the previously registered "TTHandler" by containing the following pragma at the beginning of the file: ```{{% handler:TTHandler}}```
-6. The server will find "TTHandler" within its internal registry and instantiate the associated handler object; an instance of class `TTHandler`. (Note that the handler name and the class name do not have to match, although they do match for this particular example.)
-7. The server calls the handler's `valuesForResponse` function, which is part of the `PageHandler` protocol, passing to it the request's `MoustacheEvaluationContext` and `MoustacheEvaluationOutputCollector` objects which contain all the information pertaining to the request. The return value of the `valuesForResponse` function is a Dictionary object populated with the keys and values used when processing the moustache template. The result of the template processing is the resulting data which will be sent back to the client.
-8. The `TTHandler` handler searches in the SQLite database for the previous button tap data and, if available, will use it as the response to the client. If there are no existing tap data rows, the current tap location data will be returned.
-9. The `TTHandler` handler pulls the POSTed `lat` and `long` values sent by the client and stores them, along with the current time, into the SQLite database.
-10. Finally, the `TTHandler` handler uses the previously retrieved `lat`, `long` and `time` values to populate the Dictionary which will be used when completing the moustache template. It does this by storing the values into a Dictionary and storing that Dictionary into an Array which is then placed into the returned Dictionary under the "resultSets" key. This particular methodology of storing the results Dictionary into an Array is more convoluted than is required for this simple example, but it illustrates how a multi-row result would be returned to the moustache template. This is further explored in the following.
+Ensure you have installed Xcode 8.0 or later.
 
-The content of the **TapTracker.moustache** file is as follows:
+## Setup - Xcode 8
+
+* Check out or download the project;
+* In terminal, navigate to the directory and execute
 
 ```
-{{% handler:TTHandler}}{{!
-
-	This is the moustache template file for the tap tracker example.
-	
-}}{"resultSets":[{{#resultSets}}{"time":"{{time}}","lat":{{lat}},"long":{{long}} }{{^last}},{{/last}}{{/resultSets}}]}
+swift package generate-xcodeproj
 ```
 
-This template produces JSON data. The data is structured as an array of objects found under the "resultSets" key. Each object in the array has a "time", "lat" and "long" key. The final row (even though there is only one row in this example) in the array has a "last" key which permits the array of objects to be properly comma delimited whilst adhering to the "stateless" methodology of moustache templating.
+* Open `Perfect-JSON-API.xcodeproj`
+* Add to the "Library Search Paths" in "Project Settings" `$(PROJECT_DIR)`, recursive. **(This step will be unneeded in a future release of Xcode 8.)**
+* Select the Executable build target from the build targets dropdown in Xcode
+* Run (cmd-R) to build & run in Xcode.
 
-Inside the handler, the data is placed into the resulting dictionary using the following code:
+In Xcode's console output pane you will see:
 
 ```
-// The dictionary which we will return
-var values = [String:Any]()
-let timeStr = try ICU.formatDate(time, format: "yyyy-MM-d hh:mm aaa")
-let resultSets: [[String:Any]] = [["time": timeStr, "lat":lat, "long":long, "last":true]]
-values["resultSets"] = resultSets
-return values
-``` 
+[INFO] Starting HTTP server on 0.0.0.0:8181 with document root ./webroot
+```
 
-Above, one can see the server takes the raw time value and formats it as a string using the facilities provided by ICU. This, along with the lat and long values are placed in the dictionary which is used to complete the moustache template.
+* In a browser, visit [http://localhost:8181/api/v1/people](http://localhost:8181/api/v1/people)
+
+## Setup - Terminal
+
+* Check out or download the project;
+* In terminal, navigate to the directory 
+* Execute `swift build`
+* Once the project has compiled, execute `./.build/debug/Perfect-JSON-API`
+
+The output you will see:
+
+```
+[INFO] Starting HTTP server on 0.0.0.0:8181 with document root ./webroot
+```
+
+* In a browser, visit [http://localhost:8181/api/v1/people](http://localhost:8181/api/v1/people)
+
+## Included Routes
+
+The following routes are included in this API for demonstration purposes:
+
+* GET: [http://localhost:8181/](http://localhost:8181/) - A demonstration HTML "Hello, world!" page is returned.
+* GET: [http://localhost:8181/api/v1/people](http://localhost:8181/api/v1/people) - Returns a JSON list of persons from the included mock data.
+* POST: [http://localhost:8181/api/v1/people](http://localhost:8181/api/v1/people) - Adds a person to the internal mock object and returns the new array as JSON. Note the following POST params are expected: `firstName`, `lastName`, `email`.
+* POST: [http://localhost:8181/api/v1/people/json](http://localhost:8181/api/v1/people/json) - Accepts a raw body of JSON. Adds a new person, returns the new list. JSON would be in the following format:
+
+``` javascript
+{
+    "email": "test@example.com",
+    "firstName": "Test",
+    "lastName": "User"
+}
+```
+
+## Postman Collection
+
+The repo includes a file `Example-PeopleAPI.postman_collection` which is a Postman URL collection.
+
+With Postman installed, import and use to easily query the routes.
+
+## Issues
+
+We are transitioning to using JIRA for all bugs and support related issues, therefore the GitHub issues has been disabled.
+
+If you find a mistake, bug, or any other helpful suggestion you'd like to make on the docs please head over to [http://jira.perfect.org:8080/servicedesk/customer/portal/1](http://jira.perfect.org:8080/servicedesk/customer/portal/1) and raise it.
+
+A comprehensive list of open issues can be found at [http://jira.perfect.org:8080/projects/ISS/issues](http://jira.perfect.org:8080/projects/ISS/issues)
+
+
+## Further Information
+For more information on the Perfect project, please visit [perfect.org](http://perfect.org).
