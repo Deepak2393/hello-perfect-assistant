@@ -1,5 +1,0 @@
-version: "Apple Swift version 3.0.2 (swiftlang-800.0.63 clang-800.0.42.1)"
-options: "6fe5c677f1b58cf6f6a4e73be13aea8b"
-build_time: [545980706, 627219000]
-inputs:
-  "/Users/emp215/Desktop/hello-perfect-assistant/Sources/main.swift": [545980336, 0]
